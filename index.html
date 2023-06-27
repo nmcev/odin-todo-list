@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo list</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- sidebar -->
+        <sidebar class="sidebar">
+            <div class="topic">
+                <h2 class="topic">TODO's List</h2>
+            </div>
+
+            <!-- buttons -->
+            <div class="buttons">
+
+                <!-- inbox button  -->
+                <div class="inbox-btn-cotainer">
+                    <button class="inbox-btn">inbox <img class="inbox-icon" src="assets/inbox.svg" alt=""></button>
+                </div>
+                <!-- /inbox button-->
+                <hr>
+                <!-- Project button -->
+                <div class="project-btn-container">
+                    <button class="project-btn"> Projects <img src="assets/project.svg" alt=""></button>
+                </div>
+
+            </div>
+            <!-- /buttons -->
+
+            <!-- footer-->
+            <footer class="footer">
+                <p>By Muha</p>
+                <img src="./assets/github.svg" alt="">
+            </footer>
+            <!--/footer -->
+        </sidebar>
+        <!-- /sidebar -->
+
+        <!-- main section -->
+        <main class="main">
+
+            <!-- header -->
+            <header class="header">
+                <h2 class="header-display">Welcome</h2>
+            </header>
+            <!--/header -->
+
+
+            <!-- content -->
+            <main class="main-content">
+                <div class="button">
+                    <button class="addTask-btn">Add a Task</button>
+                </div>
+
+                <form id="form" class="hide-form">
+                    <div class="inputs-container">
+
+                        <div class="title-checked">
+                            <div>
+                                <label for="title">Title:</label>
+                                <input type="text" id="title" name="title" required>
+                            </div>
+
+                            <div>
+                                <label for="completed">Completed:</label>
+                                <input type="checkbox" id="completed" name="completed">
+                            </div>
+
+                        </div>
+
+                        <div class="details-date">
+                            <div>
+                                <label for="description">Description:</label>
+                                <textarea id="description" name="description" required></textarea>
+                            </div>
+                            <div>
+                                <label for="deadline">Deadline:</label>
+                                <input type="date" id="createdAt" name="deadline">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+
+                <div class="todos">
+                    <div class="todo">
+                        <h2><span>#1</span>My first task!</h2>
+                        <div class="todo-items">
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                            <small>Due: 05/30/2021, Completed?</small>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- /main section -->
+    </div>
+
+    <script type="module" src="scripts/App.js"></script>
+</body>
+
+</html>
