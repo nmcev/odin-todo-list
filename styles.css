@@ -1,0 +1,274 @@
+@font-face {
+    font-family: Slackey;
+    src: url('./assets/fonts/Slackey-Regular.ttf');
+}
+
+@font-face {
+    font-family: lexend;
+    src: url('/assets/fonts/Lexend-VariableFont_wght.ttf');
+}
+
+@font-face {
+    font-family: Covered By Your Grace;
+    src: url('./assets/fonts/CoveredByYourGrace-Regular.ttf');
+}
+
+@font-face {
+    font-family: JosefinSans;
+    src: url('assets/fonts/JosefinSans-VariableFont_wght.ttf');
+}
+
+body {
+    margin: 0;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 2.5fr 9fr;
+    height: 100vh;
+}
+
+.sidebar {
+    background: #FFF6BD;
+    border-right: .5rem solid rgba(36, 138, 185, 0.285);
+    display: flex;
+    flex-direction: column;
+    padding-left: 4rem;
+    flex-shrink: 0;
+    padding-top: .6em;
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+}
+
+.header {
+    background-color: #FFD4B2;
+    max-height: 15vh;
+}
+
+.header-h2,
+.header-display {
+    display: grid;
+    place-content: center;
+    height: 15vh;
+    margin: 0 auto;
+    font-size: 40px;
+    font-family: JosefinSans;
+    font-weight: 400;
+}
+
+.main {
+    display: grid;
+    grid-template-rows: 1.4fr 9fr;
+    flex: 1;
+    overflow-y: auto; /* Enable vertical scroll */
+}
+
+.topic {
+    color: black;
+    font-size: 43.747px;
+    font-family: Slackey;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    width: 350px;
+    height: 239px;
+    flex-shrink: 0;
+}
+
+hr {
+    width: 300px;
+    height: 1px;
+    margin-right: 50px;
+}
+
+.project-btn,
+.inbox-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    width: 200px;
+    height: 60px;
+    flex-shrink: 0;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.349);
+    color: #86C8BC;
+    font-size: 35.402px;
+    font-family: lexend;
+    font-weight: 600;
+    border-style: none;
+    cursor: pointer;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    position: relative;
+    -webkit-transition-property: color;
+    transition-property: color;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+.project-btn:before,
+.inbox-btn::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+    background: #FFF6BD;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transform-origin: 0 50%;
+    transform-origin: 0 50%;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+}
+
+.project-btn:hover,
+.project-btn:focus,
+.inbox-btn:hover,
+.inbox-btn:focus {
+    color: #333;
+}
+
+.project-btn:hover:before,
+.project-btn:focus:before,
+.project-btn:active:before,
+.inbox-btn:hover:before,
+.inbox-btn:focus:before,
+.inbox-btn:active:before {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+}
+
+.footer {
+    color: #000;
+    font-size: 16px;
+    font-family: Covered By Your Grace;
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    gap: .45rem;
+    position: absolute;
+    bottom: 0;
+}
+
+.footer>img {
+    cursor: pointer;
+}
+
+.addTask-btn {
+    display: none;
+    background-color: #fff;
+    border: 1px solid #d5d9d9;
+    border-radius: 8px;
+    box-shadow: -21px 12px 20px 0px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    color: #0f1111;
+    cursor: pointer;
+    font-family: "Amazon Ember", sans-serif;
+    font-size: 13px;
+    line-height: 29px;
+    padding: 0 10px 0 11px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    width: 80%;
+    margin: auto;
+    margin-top: .9rem;
+    padding: .4rem;
+    font-size: 22px;
+    font-family: lexend;
+}
+
+.addTask-btn:hover {
+    background-color: #f7fafa;
+}
+
+.addTask-btn:focus {
+    border-color: #86C8BC;
+    box-shadow: -21px 12px 20px 0px rgba(0, 0, 0, 0.1);
+    outline: 0;
+}
+
+#taskForm {
+    display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid #86C8BC;
+    max-width: 80%;
+    place-content: center;
+    margin: 3rem auto;
+    padding: .5rem;
+}
+
+.hide-form {
+    display: none;
+}
+
+#description {
+    max-width: 400px;
+    /* Set your desired maximum width */
+    max-height: 100px;
+    resize: both;
+}
+
+.title-checked,
+.details-date {
+    display: flex;
+    gap: 2.5rem;
+}
+
+.inputs-container {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.todo {
+    border: 1px solid #ccc;
+}
+
+.todo:hover{
+    background: #33333330;
+    cursor: pointer;
+}
+
+/* @media screen and (max-width: 768px) {
+    .sidebar {
+        max-width: 30vw;
+        padding: 0;
+    }
+
+    .topic {
+        font-size: 22px;
+        text-align: start;
+    }
+
+    .inbox-btn-container,
+    .project-btn-container {
+        max-width: fit-content;
+    }
+
+    .project-btn {
+        margin-left: 2.3rem
+    }
+
+} */
