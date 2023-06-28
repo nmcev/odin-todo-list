@@ -1,8 +1,14 @@
+let editingIndex = -1;
 class TodoItem {
     constructor(title, description, completed, dueDate) {
         this._title = title || '';
         this._description = description || '';
         this._completed = completed || false;
+        this._dueDate = dueDate || null;
+    }
+    editTodo(title, description, dueDate) {
+        this._title = title || '';
+        this._description = description || '';
         this._dueDate = dueDate || null;
     }
 }
@@ -91,6 +97,14 @@ function makeTodo() {
             const deleteButton = makeDeleteButton(i); // Pass the index to makeDeleteButton
             todoDiv.appendChild(deleteButton);
         }
+
+        const editButton = document.createElement('button');
+        editButton.innerText = 'Edit';
+        editButton.addEventListener('click', () => {
+            editTodoForm(i);
+        });
+        todoDiv.appendChild(editButton);
+
         todoContainer.appendChild(todoDiv);
     }
 }
@@ -126,9 +140,16 @@ function handleFormSubmission() {
     const dueDateInput = document.querySelector('#createdAt').value;
     const dueDate = dueDateInput ? new Date(dueDateInput) : null;
 
-    const todo = new TodoItem(title, description, completed, dueDate);
 
-    todos.push(todo);
+    if (editingIndex !== -1) {
+        // Editing an existing todo
+        todos[editingIndex].editTodo(title, description, dueDate);
+        editingIndex = -1; // Reset the editing index
+    } else {
+        // Adding a new todo
+        const todo = new TodoItem(title, description, completed, dueDate);
+        todos.push(todo);
+    }
     makeTodo();
 
     // clear the inputs 
@@ -154,14 +175,17 @@ function toggleTodoCompletion(index) {
         }
     }
 }
+function editTodoForm(index) {
+    const todo = todos[index];
+    const titleInput = document.querySelector('#title');
+    const descriptionInput = document.querySelector('#description');
+    const completedInput = document.querySelector('#completed');
+    const dueDateInput = document.querySelector('#createdAt');
 
-// const deleteSingleTodo = (() => {
-//     const deleteButton = makeDeleteButton()
-//     console.log(deleteButton)
-//     for (let i = 0; i < todos.length; ++i) {
-//         deleteButton.addEventListener('click', () => {
-//             deleteTodo(i)
-//             console.log('testing')
-//         })
-//     }
-// })()
+    titleInput.value = todo._title;
+    descriptionInput.value = todo._description;
+    completedInput.checked = todo._completed;
+    dueDateInput.value = todo._dueDate ? todo._dueDate.toISOString().slice(0, 10) : '';
+
+    editingIndex = index; // Set the editing index to remember the todo being edited
+}
