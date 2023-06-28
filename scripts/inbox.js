@@ -3,30 +3,9 @@ class TodoItem {
         this._title = title || '';
         this._description = description || '';
         this._completed = completed || false;
-        this._createdAt = new Date();
         this._dueDate = dueDate || null;
     }
 }
-
-
-const getInformation = (() => {
-    const title = document.querySelector('#title').value;
-    const description = document.querySelector("#description").value;
-    const checkedValue = document.querySelector('#completed').checked;
-    const date = document.querySelector('#createdAt').value;
-    return {
-        title,
-        description,
-        checkedValue,
-        date,
-    };
-})();
-
-const assignValuesInClass = (() => {
-    const { title, description, checkedValue, date } = getInformation;
-    const todo = new TodoItem(title, description, checkedValue);
-})();
-
 
 const inboxUI = {
     renderButton() {
@@ -67,11 +46,80 @@ const addTaskBtnRenderForm = (() => {
     return button;
 })();
 
+const todos = [];
+
+function makeTodo() {
+    const todoContainer = document.querySelector('.todos');
+    todoContainer.innerHTML = '';
+    for (let i = 0; i < todos.length; i++) {
+        const todoDiv = document.createElement('div');
+        todoDiv.className = 'todo';
+        const todoTitle = document.createElement('h2');
+        const todoNumber = document.createElement('span');
+        todoNumber.textContent = `#${i + 1}`; // Index + 1 for the task number
+        todoTitle.appendChild(todoNumber);
+        todoTitle.appendChild(document.createTextNode(todos[i]._title));
+        todoDiv.appendChild(todoTitle);
+
+        // Apply line-through style for completed todos
+        if (todos[i].completed) {
+            todoTitle.classList.add("completed");
+        }
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = todos[i].completed;
+        checkbox.addEventListener('change', () => {
+            toggleTodoCompletion(i);
+        });
+        todoDiv.appendChild(checkbox);
+
+        const todoItem = document.createElement('div');
+        const todoParagraph = document.createElement('p');
+        todoParagraph.textContent = todos[i]._description;
+        todoItem.appendChild(todoParagraph);
+
+        const todoDate = document.createElement('small');
+        const formattedDueDate = todos[i]._dueDate
+            ? `${todos[i]._dueDate.getMonth() + 1}/${todos[i]._dueDate.getDate()}/${todos[i]._dueDate.getFullYear()}`
+            : 'N/A';
+        todoDate.textContent = `Due: ${formattedDueDate}, Completed: ${todos[i]._completed ? 'Yes' : 'No'}`;
+        todoItem.appendChild(todoDate);
+        todoDiv.appendChild(todoItem);
+        todoContainer.appendChild(todoDiv);
+        if (!todos[i].completed) {
+            const deleteButton = makeDeleteButton(i); // Pass the index to makeDeleteButton
+            todoDiv.appendChild(deleteButton);
+        }
+        todoContainer.appendChild(todoDiv);
+    }
+}
+
+function makeDeleteButton(index) {
+    const todoContainer = document.querySelector('.todos')
+    let deleteButton = document.createElement("BUTTON");
+    deleteButton.classList.add('delete-btn');
+    deleteButton.innerHTML = '<svg xmlns="http://www.w3.org/20/svg" width="16" height="16" fill="currentColor" class=" bi bi-trash text-danger"></svg>'
+    deleteButton.innerText = 'X ';
+    deleteButton.style.cursor = "pointer"
+    deleteButton.addEventListener('click', () => {
+        deleteTodo(index);
+    });
+    return deleteButton;
+}
+
+function deleteTodo(index) {
+    todos.splice(index, 1)
+    makeTodo()
+}
 
 const submitButton = document.querySelector('button[type="submit"]');
 submitButton.addEventListener('click', (event) => {
     event.preventDefault(); // Prevent form submission
+    handleFormSubmission()
+});
 
+function handleFormSubmission() {
     const title = document.querySelector('#title').value;
     const description = document.querySelector('#description').value;
     const completed = document.querySelector('#completed').checked;
@@ -80,76 +128,40 @@ submitButton.addEventListener('click', (event) => {
 
     const todo = new TodoItem(title, description, completed, dueDate);
 
-    let todos = [];
-
-    // Retrieve existing todos from local storage
-    const todosJson = localStorage.getItem('todos');
-    if (todosJson) {
-        todos = JSON.parse(todosJson);
-    }
-
-    // Add the new todo to the array
     todos.push(todo);
+    makeTodo();
 
-    // Save the updated todos array in local storage
-    localStorage.setItem('todos', JSON.stringify(todos));
-
-    // Render the todos
-    renderTodo();
-
-    // Clear the form input values
+    // clear the inputs 
     document.querySelector('#title').value = '';
     document.querySelector('#description').value = '';
     document.querySelector('#completed').checked = false;
     document.querySelector('#createdAt').value = '';
-});
+}
 
-const renderTodo = () => {
-    const todoContainer = document.querySelector('.todos');
-    todoContainer.innerHTML = ''; // Clear the existing todos
 
-    let todos = [];
+function toggleTodoCompletion(index) {
+    todos[index].completed = !todos[index].completed;
+    makeTodo();
 
-    // Retrieve todos from local storage
-    const todosJson = localStorage.getItem('todos');
-    if (todosJson) {
-        todos = JSON.parse(todosJson);
+    // Check if the todo is completed
+    if (todos[index].completed) {
+        completedTodos.push(todos[index]);
+    } else {
+        // If it was previously completed, remove it from the completedTodos array
+        const completedIndex = completedTodos.findIndex(todo => todo === todos[index]);
+        if (completedIndex !== -1) {
+            completedTodos.splice(completedIndex, 1);
+        }
     }
+}
 
-    todos.forEach((todo, index) => {
-        const todoElement = document.createElement('div');
-        todoElement.classList.add('todo');
-
-        const todoTitle = document.createElement('h2');
-        const todoNumber = document.createElement('span');
-        todoNumber.textContent = `#${index + 1}`; // Index + 1 for the task number
-        todoTitle.appendChild(todoNumber);
-        todoTitle.appendChild(document.createTextNode(todo._title));
-        todoElement.appendChild(todoTitle);
-
-        const todoItems = document.createElement('div');
-        todoItems.classList.add('todo-items');
-
-        const todoDescription = document.createElement('p');
-        todoDescription.textContent = todo._description;
-        todoItems.appendChild(todoDescription);
-
-        const todoDetails = document.createElement('small');
-        const formattedDueDate = todo._dueDate ? `${todo._dueDate.getMonth() + 1}/${todo._dueDate.getDate()}/${todo._dueDate.getFullYear()}` : 'N/A';
-        todoDetails.textContent = `Due: ${formattedDueDate}, Completed: ${todo._completed ? 'Yes' : 'No'}`;
-        todoItems.appendChild(todoDetails);
-
-        todoElement.appendChild(todoItems);
-        todoContainer.appendChild(todoElement);
-    });
-};
-
-// Render the initial todos when open inbox
-const renderSavedTodo = (() => {
-    const inboxBtn = document.querySelector('.inbox-btn')
-    inboxBtn.addEventListener("click", function () {
-        renderTodo();
-    })
-})()
-
-// delete todo's from ui when user click on the cross icon
+// const deleteSingleTodo = (() => {
+//     const deleteButton = makeDeleteButton()
+//     console.log(deleteButton)
+//     for (let i = 0; i < todos.length; ++i) {
+//         deleteButton.addEventListener('click', () => {
+//             deleteTodo(i)
+//             console.log('testing')
+//         })
+//     }
+// })()
